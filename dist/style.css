@@ -1,0 +1,208 @@
+* {
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+}
+
+body {
+  background-image: linear-gradient( 110.1deg,  rgba(34,126,34,1) 29%, rgba(168,251,60,1) 90.3% );
+}
+
+header {
+  width: 100vw;
+  height: 120px;
+  text-align: center;
+  padding-top: 1rem;
+  text-shadow: 2px 2px 8px #000;
+}
+
+header h1 {
+  font-size: 3rem;
+}
+
+.header-selectors {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+}
+
+.header-selectors > select,
+.header-selectors > input[type=text]
+{
+  padding: .5rem;
+  border: none;
+  font-size: 1rem;
+  margin-right: 1.5rem;
+  margin-left: 0.5rem;
+  color: #000;
+}
+.header-selectors > input[type=text]{
+  margin-right: 0;
+}
+
+.option-list {
+  color: #000;
+}
+
+main {
+  display: flex;
+  width: 100vw;
+}
+
+footer {
+  width: 100vw;
+  color: #000;
+  display: flex;
+  justify-content: center;
+}
+
+footer a{
+  margin: 0 5px;
+  color: #000;
+}
+
+.cards-container {
+  width: 100%;
+  display: flex;
+  margin: 2rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.project-card {
+  color: #000;
+  flex-basis: 475px;
+  background-color: rgba(255, 255, 255, 0.98);
+  border-radius: 15px;
+  padding: 25px;
+  border: 1px solid rgb(6, 46, 14);
+  position: relative;
+  padding-bottom: 60px;
+  backdrop-filter: blur(50px);
+  margin-bottom: 15px;
+}
+
+.project-card h2 {
+  color: #000;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.project-card li {
+  list-style: none;
+  color: #000;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+}
+.project-card li:last-child {
+  border-bottom: none;
+}
+
+.project-card li input[type='checkbox'] {
+  height: 20px;
+  width: 20px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.project-card button {
+  position: absolute;
+  height: 50px;
+  bottom: -0.5;
+  left: 0;
+  border-radius: 0 0 15px 15px;
+  width: 100%;
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  outline-style: none;
+  background-color: green;
+}
+
+.project-card button:hover {
+  background-color: greenyellow;
+  color: #000;
+}
+
+/* .project-card button:focus {
+  background-color: greenyellow;
+  color: #000;
+} */
+
+.low-priority-circle {
+  border-radius: 50px;
+  background-color: green;
+  height: 10px;
+  width: 10px;
+  float: right;
+  margin-top: 7px;
+  margin-right: 5px;
+}
+
+.mid-priority-circle {
+  border-radius: 50px;
+  background-color: yellow;
+  height: 10px;
+  width: 10px;
+  float: right;
+  margin-top: 7px;
+  margin-right: 5px;
+}
+
+.high-priority-circle {
+  border-radius: 50px;
+  background-color: red;
+  height: 10px;
+  width: 10px;
+  float: right;
+  margin-top: 7px;
+  margin-right: 5px;
+}
+
+.new-task-txt-input-div {
+  width: 50%;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  margin-top: 55px;
+}
+
+.new-task-txt-input-div input[type=text] {
+  font-size: 1.5rem;
+  color: #000;
+  padding: 0.25rem;
+  border: none;
+  width: 75%;
+  padding-left: 0.75rem
+}
+
+.new-task-txt-input-div select {
+  font-size: 1rem;
+  color: #000;
+  border: none;
+  width: 15%;
+  padding-left: 0.75rem;
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.new-task-txt-input-div button,
+.header-selectors > button
+{
+  border: none;
+  background: green;
+  height: 45px;
+  width: 45px;
+  font-size: 1.85rem;
+  cursor: pointer;
+}
+
+.header-selectors > button {
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+}
