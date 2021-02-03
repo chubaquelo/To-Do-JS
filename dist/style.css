@@ -3,7 +3,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  color: #fff;
 }
 
 body {
@@ -20,6 +19,10 @@ header {
 
 header h1 {
   font-size: 3rem;
+  color: #fff;
+}
+header p {
+  color: #fff;
 }
 
 .header-selectors {
@@ -70,7 +73,7 @@ footer a{
   margin: 2rem;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: left;
 }
 
 .project-card {
@@ -84,6 +87,8 @@ footer a{
   padding-bottom: 60px;
   backdrop-filter: blur(50px);
   margin-bottom: 15px;
+  margin-left: 15px;
+  flex-grow: 3;
 }
 
 .project-card h2 {
@@ -205,4 +210,20 @@ footer a{
   width: 40px;
   height: 40px;
   font-size: 1.5rem;
+}
+
+.project-card > button.btn-delete-project {
+  position: absolute;
+  top: 0px;
+  /* left: 90.5%; */
+  border-radius: 15px 0 25px 0;
+  background-color: red;
+  color: #fff;
+  width: 45px;
+  height: 25px;
+  opacity: 25%;
+}
+
+.project-card > button.btn-delete-project:hover {
+  opacity: 100%;
 }
