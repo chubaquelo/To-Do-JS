@@ -185,6 +185,14 @@ footer a {
   margin-right: 5px;
 }
 
+.erase-icon {
+  width: 20px;
+  height: 20px;
+  float: right;
+  position: relative;
+  left: 10px;
+}
+
 .new-task-txt-input-div {
   width: 50%;
   margin: auto;

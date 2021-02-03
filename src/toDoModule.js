@@ -75,9 +75,15 @@ const toDo = (function () {
       label.classList.add('done-task-txt');
     }
     
+    let eraseIcon = document.createElement("img");
+    eraseIcon.src = "./img/trash.svg";
+    eraseIcon.className = "erase-icon";
+    eraseIcon.addEventListener("click", eraseTask);
+
     let dueSpan = document.createElement("span");
     dueSpan.style = "color: rgba(0, 0, 0, 0.5); float: right;";
     dueSpan.textContent = toDo.dueDate;
+    
     let priorityBullet = document.createElement("div");
     
     // Styling for priority bullet
@@ -97,7 +103,7 @@ const toDo = (function () {
         break;
     }
 
-    li.append(input, label, dueSpan, priorityBullet);
+    li.append(input, label, eraseIcon, dueSpan, priorityBullet);
     ul.append(li);
     card.append(ul);
 
@@ -106,6 +112,22 @@ const toDo = (function () {
       saveLocal(toDoList);
     }
   };
+
+  const eraseTask = (e) => {
+    
+    if (confirm('Are you sure?') === true) {
+      let taskTitle = e.target.previousSibling.innerText;
+      let filteredList = toDoList.filter(element => element.title !== taskTitle);
+      toDoList = [].concat(filteredList);
+      saveLocal(toDoList);
+  
+      // Remove from DOM
+      let parent = e.target.parentNode.parentNode;
+      let toErase = e.target.parentNode;
+  
+      parent.removeChild(toErase);
+    }
+  }
 
   const markAsDone = (e) => {
 
