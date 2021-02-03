@@ -1,12 +1,16 @@
 * {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 body {
-  background-image: linear-gradient( 110.1deg,  rgba(34,126,34,1) 29%, rgba(168,251,60,1) 90.3% );
+  background-image: linear-gradient(
+    110.1deg,
+    rgba(34, 126, 34, 1) 29%,
+    rgba(168, 251, 60, 1) 90.3%
+  );
 }
 
 header {
@@ -33,16 +37,15 @@ header p {
 }
 
 .header-selectors > select,
-.header-selectors > input[type=text]
-{
-  padding: .5rem;
+.header-selectors > input[type="text"] {
+  padding: 0.5rem;
   border: none;
   font-size: 1rem;
   margin-right: 1.5rem;
   margin-left: 0.5rem;
   color: #000;
 }
-.header-selectors > input[type=text]{
+.header-selectors > input[type="text"] {
   margin-right: 0;
 }
 
@@ -62,7 +65,7 @@ footer {
   justify-content: center;
 }
 
-footer a{
+footer a {
   margin: 0 5px;
   color: #000;
 }
@@ -107,7 +110,7 @@ footer a{
   border-bottom: none;
 }
 
-.project-card li input[type='checkbox'] {
+.project-card li input[type="checkbox"] {
   height: 20px;
   width: 20px;
   margin-right: 10px;
@@ -177,13 +180,13 @@ footer a{
   margin-top: 55px;
 }
 
-.new-task-txt-input-div input[type=text] {
+.new-task-txt-input-div input[type="text"] {
   font-size: 1.5rem;
   color: #000;
   padding: 0.25rem;
   border: none;
   width: 75%;
-  padding-left: 0.75rem
+  padding-left: 0.75rem;
 }
 
 .new-task-txt-input-div select {
@@ -196,8 +199,7 @@ footer a{
 }
 
 .new-task-txt-input-div button,
-.header-selectors > button
-{
+.header-selectors > button {
   border: none;
   background: green;
   height: 45px;
@@ -215,7 +217,6 @@ footer a{
 .project-card > button.btn-delete-project {
   position: absolute;
   top: 0px;
-  /* left: 90.5%; */
   border-radius: 15px 0 25px 0;
   background-color: red;
   color: #fff;

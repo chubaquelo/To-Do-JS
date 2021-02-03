@@ -1,48 +1,56 @@
-const toDo = (function() {
-
+const toDo = (function () {
   class ToDo {
-    constructor(title, description, project = 'Default') {
+    constructor(title, description, project = "Default", dueDate, priority) {
       this.title = title;
       this.description = description;
-      // this.dueDate = dueDate;
-      // this.priority = priority;
       this.project = project;
+      this.dueDate = dueDate;
+      this.priority = priority;
     }
   }
 
   let inputToDoName = document.querySelector("#input-todo-name");
   let inputProject = document.querySelector("#select-project");
+  let inputDueDate = document.querySelector('.date-picker');
+  let inputPriority = document.querySelector(".priority-picker");
 
-  // if (
-  //   localStorage.getItem("Tasks") !== null &&
-  //   localStorage.getItem("Tasks") !== "undefined"
-  // ) {
-  //   toDoList = JSON.parse(localStorage.getItem("Tasks"));
-  // } else {
-  //   toDoList = [];
-  // }
   let toDoList = [];
 
-   const loadTasks = () => {
-     if (
-       localStorage.getItem("Tasks") !== null &&
-       localStorage.getItem("Tasks") !== "undefined"
-     ) {
-       toDoList = JSON.parse(localStorage.getItem("Tasks"));
-     } else {
-       toDoList = [];
-     }
+  const loadTasks = () => {
+    if (
+      localStorage.getItem("Tasks") !== null &&
+      localStorage.getItem("Tasks") !== "undefined"
+    ) {
+      toDoList = JSON.parse(localStorage.getItem("Tasks"));
+    } else {
+      toDoList = [];
+    }
 
-     toDoList.forEach((task) => {
-       if (localStorage.getItem('Projects').includes(task.project)) {
-         addToDo(task.description, task.title, task.project, true);
-       }
-     });
-   };
+    toDoList.forEach((task) => {
+      if (
+        localStorage.getItem("Projects").includes(urlUndashedName(task.project))
+      ) {
+        addToDo(
+          task.description,
+          task.title,
+          task.project,
+          task.dueDate,
+          task.priority,
+          true
+        );
+      }
+    });
+  };
 
-  const addToDo = (description = "Default Description", title = inputToDoName.value, project = inputProject.value, loading = false) => {
-
-    let toDo = new ToDo(title, description, project);
+  const addToDo = (
+    description = "Default Description",
+    title = inputToDoName.value,
+    project = inputProject.value,
+    dueDate = inputDueDate.value,
+    priority = inputPriority.value,
+    loading = false
+  ) => {
+    let toDo = new ToDo(title, description, project, dueDate, priority);
     let card = document.querySelector(
       `article.project-card[data-proj="${project}"]`
     );
@@ -59,19 +67,32 @@ const toDo = (function() {
     // here
     let dueSpan = document.createElement("span");
     dueSpan.style = "color: rgba(0, 0, 0, 0.5); float: right;";
-    dueSpan.textContent = "Due: 01/01/2031";
-    let priority = document.createElement("div");
-    priority.setAttribute("title", "Low Priority");
-    priority.className = "low-priority-circle";
+    dueSpan.textContent = toDo.dueDate;
+    let priorityBullet = document.createElement("div");
+    // Styling for priority bullet
+    
+    switch (priority){
+      case 'low':
+        priorityBullet.setAttribute("title", "Low Priority");
+        priorityBullet.className = "low-priority-circle";
+        break;
+      case 'mid':
+        priorityBullet.setAttribute("title", "Medium Priority");
+        priorityBullet.className = "mid-priority-circle";
+        break;
+      case 'high':
+        priorityBullet.setAttribute("title", "High Priority");
+        priorityBullet.className = "high-priority-circle";
+        break;
+    }
 
-    li.append(input, label, dueSpan, priority);
+    li.append(input, label, dueSpan, priorityBullet);
     ul.append(li);
     card.append(ul);
 
     if (loading === false) {
       toDoList.push(toDo);
       saveLocal(toDoList);
-      console.log('saving again');
     }
   };
 
@@ -79,7 +100,11 @@ const toDo = (function() {
     localStorage.setItem("Tasks", JSON.stringify(toDoList));
   }
 
-  return {addToDo, loadTasks};
+  function urlUndashedName(name) {
+    return name.split(/-+/).join(" ");
+  }
+
+  return { addToDo, loadTasks };
 })();
 
 export default toDo;

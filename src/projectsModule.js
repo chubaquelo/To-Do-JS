@@ -71,7 +71,7 @@ const projects = () => {
       //Remove from local, and remove all tasks from projects also, then save.
       let tasks = JSON.parse(localStorage.getItem('Tasks'));
       let filteredTasks = tasks.filter(element => element.project !== projectName);
-      
+
       localStorage.setItem("Tasks", JSON.stringify(filteredTasks));
       saveLocal(projectsList);
       location.reload();

@@ -1,68 +1,60 @@
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css">
-  <title>To-Do Lists with Js</title>
-</head>
-<body>
-  <header>
-    <h1>To-Do List</h1>
-    <div class="header-selectors">
-      <p>Show: </p>
-      <select id="projects-view-selector" name="projects">
-        <option value="default">All</option>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <title>To-Do Lists with Js</title>
+  </head>
+  <body>
+    <header>
+      <h1>To-Do List</h1>
+      <div class="header-selectors">
+        <p>Show:</p>
+        <select id="projects-view-selector" name="projects">
+          <option value="default">All</option>
+        </select>
+        <p>Order by:</p>
+        <select id="orderBy" name="orderBy">
+          <option class="option-list" value="order-by-priority">
+            Priority
+          </option>
+          <option class="option-list" value="order-by-duedate">Due Date</option>
+        </select>
+        <p>New Project:</p>
+        <input class="input-project-name" type="text" />
+        <button class="new-project-submit">+</button>
+      </div>
+    </header>
+
+    <div class="new-task-txt-input-div">
+      <input
+        placeholder="Add your new task here..."
+        type="text"
+        id="input-todo-name"
+      />
+      <select id="select-project"></select>
+      <input type="date" class="date-picker" placeholder="Due Date">
+      <select class="priority-picker" placeholder="Priority">
+        <option value="low">Low</option>
+        <option value="mid">Medium</option>
+        <option value="high">High</option>
       </select>
-      <p>Order by: </p>
-      <select id="orderBy" name="orderBy">
-        <option class="option-list" value="order-by-priority">Priority</option>
-        <option class="option-list" value="order-by-duedate">Due Date</option>
-      </select>
-      <p>New Project: </p>
-      <input class="input-project-name" type="text">
-      <button class="new-project-submit">+</button>
+      <button class="new-task-submit">+</button>
     </div>
-  </header>
 
-  <div class="new-task-txt-input-div">
-    <input placeholder="Add your new task here..." type="text" id="input-todo-name">
-    <select id="select-project">
-    </select>
-    <button>
-      <img src="./img/calendar.svg" width="20px">
-    </button>
-    <button>
-      <img src="./img/priority.svg" width="20px">
-    </button>
-    <button class="new-task-submit">+</button>
-  </div>
+    <main>
+      <div class="cards-container"></div>
+    </main>
+    <footer>
+      Designed and implemented by
+      <a href="https://github.com/chubaquelo"> Sergio Obolevich</a>
+    </footer>
 
-  <main>
-    <div class="cards-container">
-      <!-- <article class="project-card">
-        <h2>Some Project Name</h2>
-        <ul>
-          <li>
-            <input name="done" type="checkbox" class="checktick">
-            <label for="done">Some task</label>
-            <span style="color: rgba(0, 0, 0, 0.5); float: right;">Due: 01/01/2031</span>
-            <div title="Low Priority" class="low-priority-circle"></div>
-          </li>
-          <li><input type="checkbox">Another task
-            <span style="color: rgba(0, 0, 0, 0.5); float: right;">Due: 01/01/2031</span>
-            <div title="High Priority" class="high-priority-circle"></div>
-          </li>
-        </ul>
-        <button>Add new task</button>
-      </article> -->
-    </div>
-  </main>
-  <footer>
-    Designed and implemented by  <a href="https://github.com/chubaquelo"> Sergio Obolevich</a>
-  </footer>
-
-  <script type="text/javascript" src="./main.js"></script>
-</body>
+    <script type="text/javascript" src="./main.js"></script>
+  </body>
 </html>
