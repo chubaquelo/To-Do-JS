@@ -1,11 +1,12 @@
 const toDo = (function () {
   class ToDo {
-    constructor(title, description, project = "Default", dueDate, priority) {
+    constructor(title, description, project = "Default", dueDate, priority, status = false) {
       this.title = title;
       this.description = description;
       this.project = project;
       this.dueDate = dueDate;
       this.priority = priority;
+      this.status = status;
     }
   }
 
@@ -36,6 +37,7 @@ const toDo = (function () {
           task.project,
           task.dueDate,
           task.priority,
+          task.status,
           true
         );
       }
@@ -48,27 +50,36 @@ const toDo = (function () {
     project = inputProject.value,
     dueDate = inputDueDate.value,
     priority = inputPriority.value,
+    status = false,
     loading = false
   ) => {
-    let toDo = new ToDo(title, description, project, dueDate, priority);
+    let toDo = new ToDo(title, description, project, dueDate, priority, status);
     let card = document.querySelector(
       `article.project-card[data-proj="${project}"]`
     );
     let ul = document.createElement("ul");
     let li = document.createElement("li");
     let input = document.createElement("input");
+    if (status === true){ input.checked = true }
     input.setAttribute("type", "checkbox");
     input.setAttribute("name", "done");
     input.className = "checkbox";
+    input.addEventListener("change", markAsDone);
+    
     let label = document.createElement("label");
     label.setAttribute("for", "done");
-    // here
     label.textContent = toDo.title;
-    // here
+    
+    if (toDo.status === "true"){
+      input.checked = true;
+      label.classList.add('done-task-txt');
+    }
+    
     let dueSpan = document.createElement("span");
     dueSpan.style = "color: rgba(0, 0, 0, 0.5); float: right;";
     dueSpan.textContent = toDo.dueDate;
     let priorityBullet = document.createElement("div");
+    
     // Styling for priority bullet
     
     switch (priority){
@@ -96,6 +107,24 @@ const toDo = (function () {
     }
   };
 
+  const markAsDone = (e) => {
+
+    toDoList.forEach(task => {
+      if (
+        task.title === e.target.nextSibling.innerText &&
+        e.target.checked
+      ) {
+        task.status = true;
+      } else if (
+        task.title === e.target.nextSibling.innerText &&
+        !e.target.checked
+      ) {
+        task.status = false;
+      }
+    })
+    saveLocal(toDoList);
+  }
+
   function saveLocal(item) {
     localStorage.setItem("Tasks", JSON.stringify(toDoList));
   }
@@ -104,7 +133,7 @@ const toDo = (function () {
     return name.split(/-+/).join(" ");
   }
 
-  return { addToDo, loadTasks };
+  return { addToDo, loadTasks, markAsDone };
 })();
 
 export default toDo;

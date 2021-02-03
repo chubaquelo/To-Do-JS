@@ -117,6 +117,19 @@ footer a {
   vertical-align: middle;
 }
 
+.project-card li input[type="checkbox"]:checked {
+  height: 10px;
+  width: 10px;
+}
+
+.project-card li input[type="checkbox"]:checked + label {
+  margin-right: 5px;
+  vertical-align: middle;
+  text-decoration: line-through;
+  opacity: 50%;
+  font-size: 0.75rem;
+}
+
 .project-card button {
   position: absolute;
   height: 50px;
@@ -227,4 +240,9 @@ footer a {
 
 .project-card > button.btn-delete-project:hover {
   opacity: 100%;
+}
+
+.done-task-txt {
+  opacity: 50%;
+  text-decoration: line-through;
 }
