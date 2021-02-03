@@ -13,7 +13,7 @@ const projects = () => {
   ) {
     projectsList = JSON.parse(localStorage.getItem("Projects"));
   } else {
-    projectsList = ["Default"];
+    projectsList = ["Default Project"];
   }
 
   const addNewProject = () => {
@@ -97,7 +97,7 @@ const projects = () => {
     if (localStorage.getItem("Projects") !== null) {
       projectsList = JSON.parse(localStorage.getItem("Projects"));
     } else {
-      projectsList = ["Default"];
+      projectsList = ["Default Project"];
       localStorage.setItem('Projects', JSON.stringify(projectsList));
     }
 
