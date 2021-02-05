@@ -110,7 +110,6 @@ const toDo = (function toDo() {
       toDoList = [].concat(filteredList);
       saveLocal(toDoList);
 
-      // Remove from DOM
       const parent = e.target.parentNode.parentNode;
       const toErase = e.target.parentNode;
 
@@ -185,8 +184,6 @@ const toDo = (function toDo() {
 
     const priorityBullet = document.createElement('div');
 
-    // Styling for priority bullet
-
     switch (priority) {
       default:
         priorityBullet.setAttribute('title', 'Low Priority');
@@ -213,7 +210,6 @@ const toDo = (function toDo() {
 
     document.querySelector('#input-todo-name').value = '';
     document.querySelector('.date-picker').value = '';
-    // inputDueDate = "";
   };
 
   const loadTasks = () => {
