@@ -1,6 +1,18 @@
+import pureFunctions from './pureFunctions';
+import Dom from './DOM';
+
+const F = pureFunctions();
+
 const toDo = (function toDo() {
   class ToDo {
-    constructor(title, description = 'No description', project = 'Default', dueDate, priority, status = false) {
+    constructor(
+      title,
+      description = 'No description',
+      project = 'Default',
+      dueDate,
+      priority,
+      status = false,
+    ) {
       this.title = title;
       this.description = description;
       this.project = project;
@@ -10,105 +22,62 @@ const toDo = (function toDo() {
     }
   }
 
-  const inputToDoName = document.querySelector('#input-todo-name');
-  const inputProject = document.querySelector('#select-project');
-  const inputDueDate = document.querySelector('.date-picker');
-  const inputPriority = document.querySelector('.priority-picker');
+  function findIdxWithName(name, list) {
+    const tasksList = list;
 
-  let toDoList = [];
-
-  function findTaskIdxWithName(name) {
     let value;
-    toDoList.forEach((task) => {
+    tasksList.forEach((task) => {
       if (task.title === name) {
-        value = toDoList.indexOf(task);
+        value = tasksList.indexOf(task);
       }
     });
+
     return value;
   }
 
-  function urlUndashedName(name) {
-    return name.split(/-+/).join(' ');
-  }
+  function saveModalChanges(taskIndex) {
+    const tasksList = F.fetchLocalStorage('Tasks');
+    const task = tasksList[taskIndex];
 
-  function saveLocal() {
-    localStorage.setItem('Tasks', JSON.stringify(toDoList));
+    task.title = document.querySelector('.text-editor-inputs[type=text]').value;
+    task.description = document.querySelector('textarea').value;
+    task.dueDate = document.querySelector(
+      '.text-editor-inputs[type=date]',
+    ).value;
+    task.priority = document.querySelector('select.text-editor-inputs').value;
+
+    tasksList[taskIndex] = task;
+    F.saveLocalStorage('Tasks', tasksList);
+
+    const body = document.querySelector('body');
+    const taskEditor = document.querySelector('.task-editor');
+    body.removeChild(taskEditor);
+    window.location.reload();
   }
 
   const openTaskEditor = (e) => {
-    const currentTask = toDoList[findTaskIdxWithName(e.target.innerText)];
-
+    const tasksList = F.fetchLocalStorage('Tasks');
+    const taskIndex = findIdxWithName(e.target.innerText, tasksList);
+    const currentTask = tasksList[taskIndex];
     const body = document.querySelector('body');
-    const editor = document.createElement('div');
-    editor.className = 'task-editor';
+    const modal = Dom.modalWithTaskInfo(currentTask);
+    body.append(modal);
 
-    const mainWindow = document.createElement('div');
-    mainWindow.className = 'task-editor-window';
-
-    const taskTitle = document.createElement('input');
-    taskTitle.className = 'text-editor-inputs';
-    taskTitle.setAttribute('type', 'text');
-    taskTitle.value = currentTask.title;
-    taskTitle.textContent = e.target.innerText;
-
-    const taskDescription = document.createElement('textarea');
-    taskDescription.className = 'text-editor-description';
-    taskDescription.className = 'text-editor-inputs';
-    taskDescription.value = currentTask.description;
-
-    const taskDate = document.createElement('input');
-    taskDate.className = 'text-editor-inputs';
-    taskDate.setAttribute('type', 'date');
-    taskDate.value = currentTask.dueDate;
-
-    const taskPriority = document.createElement('select');
-    taskPriority.className = 'text-editor-inputs';
-    const optionLow = document.createElement('option');
-    optionLow.value = 'low';
-    optionLow.textContent = 'Low';
-    const optionMid = document.createElement('option');
-    optionMid.value = 'mid';
-    optionMid.textContent = 'Mid';
-    const optionHigh = document.createElement('option');
-    optionHigh.value = 'high';
-    optionHigh.textContent = 'High';
-    taskPriority.append(optionLow, optionMid, optionHigh);
-    taskPriority.value = currentTask.priority;
-
-    const btnSave = document.createElement('button');
-    btnSave.setAttribute('type', 'button');
-    btnSave.innerText = 'Save changes / Close';
-
-    function saveChanges() {
-      currentTask.title = taskTitle.value;
-      currentTask.description = taskDescription.value;
-      currentTask.dueDate = taskDate.value;
-      currentTask.priority = taskPriority.value;
-      toDoList[findTaskIdxWithName(e.target.innerText)] = currentTask;
-      saveLocal();
-      window.location.reload();
-    }
-    btnSave.addEventListener('click', saveChanges);
-
-    mainWindow.append(
-      taskTitle,
-      taskDescription,
-      taskDate,
-      taskPriority,
-      btnSave,
-    );
-    editor.append(mainWindow);
-    body.append(editor);
+    const btnSaveChanges = document.querySelector('#save-changes');
+    btnSaveChanges.addEventListener('click', () => {
+      saveModalChanges(taskIndex);
+    });
   };
 
   const eraseTask = (e) => {
     if (window.confirm('Are you sure?') === true) {
+      let tasksList = F.fetchLocalStorage('Tasks');
       const taskTitle = e.target.previousSibling.innerText;
-      const filteredList = toDoList.filter(
+      const filteredList = tasksList.filter(
         (element) => element.title !== taskTitle,
       );
-      toDoList = [].concat(filteredList);
-      saveLocal(toDoList);
+      tasksList = [].concat(filteredList);
+      F.saveLocalStorage('Tasks', tasksList);
 
       const parent = e.target.parentNode.parentNode;
       const toErase = e.target.parentNode;
@@ -118,7 +87,8 @@ const toDo = (function toDo() {
   };
 
   const markAsDone = (e) => {
-    toDoList.forEach((task) => {
+    const tasksList = F.fetchLocalStorage('Tasks');
+    tasksList.forEach((task) => {
       if (task.title === e.target.nextSibling.innerText && e.target.checked) {
         task.status = true;
       } else if (
@@ -128,15 +98,32 @@ const toDo = (function toDo() {
         task.status = false;
       }
     });
-    saveLocal(toDoList);
+    F.saveLocalStorage('Tasks', tasksList);
+  };
+
+  const addTasksListeners = () => {
+    const checkboxes = document.querySelectorAll('.checkbox');
+    checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener('change', markAsDone);
+    });
+
+    const labels = document.querySelectorAll('label');
+    labels.forEach((label) => {
+      label.addEventListener('click', openTaskEditor);
+    });
+
+    const eraseIcons = document.querySelectorAll('.erase-icon');
+    eraseIcons.forEach((eraseIcon) => {
+      eraseIcon.addEventListener('click', eraseTask);
+    });
   };
 
   const addToDo = (
     description = 'Default Description',
-    title = inputToDoName.value,
-    project = inputProject.value,
-    dueDate = inputDueDate.value,
-    priority = inputPriority.value,
+    title,
+    project,
+    dueDate,
+    priority,
     status = false,
     loading = false,
   ) => {
@@ -149,84 +136,33 @@ const toDo = (function toDo() {
       priority,
       status,
     );
+
     const card = document.querySelector(
-      `article.project-card[data-proj="${project}"]`,
+      `article.project-card[data-project="${project}"]`,
     );
     const ul = document.createElement('ul');
-    const li = document.createElement('li');
-    const input = document.createElement('input');
-    if (status === true) {
-      input.checked = true;
-    }
-    input.setAttribute('type', 'checkbox');
-    input.setAttribute('name', 'done');
-    input.className = 'checkbox';
-    input.addEventListener('change', markAsDone);
-
-    const label = document.createElement('label');
-    label.setAttribute('for', 'done');
-    label.textContent = toDo.title;
-    label.addEventListener('click', openTaskEditor);
-
-    if (toDo.status === 'true') {
-      input.checked = true;
-      label.classList.add('done-task-txt');
-    }
-
-    const eraseIcon = document.createElement('img');
-    eraseIcon.src = './img/trash.svg';
-    eraseIcon.className = 'erase-icon';
-    eraseIcon.addEventListener('click', eraseTask);
-
-    const dueSpan = document.createElement('span');
-    dueSpan.style = 'color: rgba(0, 0, 0, 0.5); float: right;';
-    dueSpan.textContent = toDo.dueDate;
-
-    const priorityBullet = document.createElement('div');
-
-    switch (priority) {
-      default:
-        priorityBullet.setAttribute('title', 'Low Priority');
-        priorityBullet.className = 'low-priority-circle';
-        break;
-      case 'mid':
-        priorityBullet.setAttribute('title', 'Medium Priority');
-        priorityBullet.className = 'mid-priority-circle';
-        break;
-      case 'high':
-        priorityBullet.setAttribute('title', 'High Priority');
-        priorityBullet.className = 'high-priority-circle';
-        break;
-    }
-
-    li.append(input, label, eraseIcon, dueSpan, priorityBullet);
-    ul.append(li);
+    const taskLi = Dom.createToDoDomElement(toDo);
+    ul.append(taskLi);
     card.append(ul);
 
     if (loading === false) {
-      toDoList.push(toDo);
-      saveLocal(toDoList);
+      const taskList = F.fetchLocalStorage('Tasks');
+      taskList.push(toDo);
+      F.saveLocalStorage('Tasks', taskList);
     }
 
     document.querySelector('#input-todo-name').value = '';
     document.querySelector('.date-picker').value = '';
+    addTasksListeners();
   };
 
   const loadTasks = () => {
-    if (
-      localStorage.getItem('Tasks') !== null
-      && localStorage.getItem('Tasks') !== 'undefined'
-    ) {
-      toDoList = JSON.parse(localStorage.getItem('Tasks'));
-    } else {
-      toDoList = [];
-    }
-
-    toDoList.forEach((task) => {
+    const tasksList = F.fetchLocalStorage('Tasks');
+    tasksList.forEach((task) => {
       if (
         localStorage
           .getItem('Projects')
-          .includes(urlUndashedName(task.project))
+          .includes(F.urlUndashedName(task.project))
       ) {
         addToDo(
           task.description,
@@ -239,6 +175,7 @@ const toDo = (function toDo() {
         );
       }
     });
+    addTasksListeners();
   };
 
   return { addToDo, loadTasks, markAsDone };

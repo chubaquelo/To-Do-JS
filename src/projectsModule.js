@@ -1,145 +1,78 @@
-const projects = () => {
-  const projectsViewSelector = document.querySelector(
-    '#projects-view-selector',
-  );
-  const newTaskProjectSelector = document.querySelector('#select-project');
-  const cardsContainer = document.querySelector('.cards-container');
-  const inpNewProjName = document.querySelector('.input-project-name');
+import Dom from './DOM';
+import pureFunctions from './pureFunctions';
 
-  let projectsList = [];
-
-  if (
-    localStorage.getItem('Projects') !== null
-    && localStorage.getItem('Projects') !== 'undefined'
-  ) {
-    projectsList = JSON.parse(localStorage.getItem('Projects'));
-  } else {
-    projectsList = ['Default Project'];
-  }
-
-  const saveLocal = (projectsList) => {
-    localStorage.setItem('Projects', JSON.stringify(projectsList));
-  };
-
-  function urlDashedName(name) {
-    return name.split(/\s+/).join('-');
-  }
-
-  const saveNewProject = (name) => {
-    projectsList.push(name);
-    saveLocal(projectsList);
-  };
-
+const Projects = () => {
+  const F = pureFunctions();
 
   const deleteProject = (e) => {
-    const projectName = urlDashedName(
-      e.target.previousElementSibling.innerText,
-    );
     if (
       window.confirm('Do you really want to delete the whole Project??')
       === true
     ) {
-      const optionView = document.querySelector(
-        `#projects-view-selector > option[value='${urlDashedName(
-          e.target.previousElementSibling.innerText,
-        )}']`,
-      );
-      const optionAdd = document.querySelector(
-        `#select-project > option[value='${urlDashedName(
-          e.target.previousElementSibling.innerText,
-        )}']`,
-      );
-      document.querySelector('#projects-view-selector').removeChild(optionView);
-      document.querySelector('#select-project').removeChild(optionAdd);
-      const projectCard = e.target.offsetParent;
+      const projectsList = F.fetchLocalStorage('Projects');
+      const tasksList = F.fetchLocalStorage('Tasks');
+      const projectName = e.target.previousElementSibling.innerText;
 
       projectsList.splice(
-        projectsList.indexOf(e.target.previousElementSibling.innerText),
+        projectsList.indexOf(projectName),
         1,
       );
-      // Remove card
-      cardsContainer.removeChild(projectCard);
-      // Remove from local, and remove all tasks from projects also, then save.
-      const tasks = JSON.parse(localStorage.getItem('Tasks'));
-      const filteredTasks = tasks.filter(
+
+      const filteredTasks = tasksList.filter(
         (element) => element.project !== projectName,
       );
 
-      localStorage.setItem('Tasks', JSON.stringify(filteredTasks));
-      saveLocal(projectsList);
+      F.saveLocalStorage('Projects', projectsList);
+      F.saveLocalStorage('Tasks', filteredTasks);
       window.location.reload();
     }
   };
 
-  const addNewProject = () => {
-    const card = document.createElement('article');
-    card.className = 'project-card';
-    card.dataset.project = urlDashedName(inpNewProjName.value);
-
-    const title = document.createElement('h2');
-    title.textContent = inpNewProjName.value;
-
-    const btnDelete = document.createElement('button');
-    btnDelete.textContent = 'X';
-    btnDelete.className = 'btn-delete-project';
-    btnDelete.addEventListener('click', deleteProject);
-
-    const ul = document.createElement('ul');
-    const btnCreateTask = document.createElement('button');
-    btnCreateTask.textContent = 'Add new task';
-
-    const newViewOption = document.createElement('option');
-    newViewOption.value = urlDashedName(inpNewProjName.value);
-    newViewOption.textContent = inpNewProjName.value;
-    projectsViewSelector.append(newViewOption);
-
-    const newViewOptionCopy = newViewOption.cloneNode(true);
-    newTaskProjectSelector.append(newViewOptionCopy);
-
-    card.append(title, btnDelete, ul, btnCreateTask);
-    cardsContainer.append(card);
-    saveNewProject(inpNewProjName.value);
-    window.location.reload();
+  const addRemoveProjectsBtnEventListener = () => {
+    const btnsRemoveProject = document.querySelectorAll('.btn-delete-project');
+    btnsRemoveProject.forEach((btn) => btn.addEventListener('click', deleteProject));
   };
 
-  const loadProjects = () => {
+  const addNewProject = (title) => {
+    const dashedProjectTitle = F.urlDashedName(title);
+    Dom.addProjectCardDom(title, dashedProjectTitle);
+    Dom.addOptionForSelect(title, dashedProjectTitle, 'list');
+    Dom.addOptionForSelect(title, dashedProjectTitle, 'view');
+
+    const projects = F.fetchLocalStorage('Projects');
+    projects.push(title);
+    F.saveLocalStorage('Projects', projects);
+    addRemoveProjectsBtnEventListener();
+  };
+
+  const getProjectsList = () => {
     let projectsList = [];
 
-    if (localStorage.getItem('Projects') !== null) {
-      projectsList = JSON.parse(localStorage.getItem('Projects'));
+    if (F.fetchLocalStorage('Projects') !== null) {
+      projectsList = F.fetchLocalStorage('Projects');
     } else {
       projectsList = ['Default Project'];
       localStorage.setItem('Projects', JSON.stringify(projectsList));
     }
+    return projectsList;
+  };
 
+  const spreadProjectsListToView = (projectsList) => {
     projectsList.forEach((title) => {
-      const cardCont = document.querySelector('.cards-container');
-      const card = document.createElement('article');
-      card.className = 'project-card';
-      card.dataset.proj = urlDashedName(title);
-      const h2 = document.createElement('h2');
-      h2.textContent = title;
-      const btnDelete = document.createElement('button');
-      btnDelete.textContent = 'X';
-      btnDelete.className = 'btn-delete-project';
-      btnDelete.addEventListener('click', deleteProject);
-      const ul = document.createElement('ul');
-      const btnCreateTask = document.createElement('button');
-      btnCreateTask.textContent = 'Add new task';
-
-      const newViewOption = document.createElement('option');
-      newViewOption.value = urlDashedName(title);
-      newViewOption.textContent = title;
-      projectsViewSelector.append(newViewOption);
-      const newViewOptionCopy = newViewOption.cloneNode(true);
-      newTaskProjectSelector.append(newViewOptionCopy);
-
-      card.append(h2, btnDelete, ul, btnCreateTask);
-      cardCont.append(card);
+      const dashedProjectTitle = F.urlDashedName(title);
+      Dom.addProjectCardDom(title, dashedProjectTitle);
+      Dom.addOptionForSelect(title, dashedProjectTitle, 'list');
+      Dom.addOptionForSelect(title, dashedProjectTitle, 'view');
+      addRemoveProjectsBtnEventListener();
     });
   };
 
-  return { addNewProject, loadProjects, deleteProject };
+  return {
+    addNewProject,
+    getProjectsList,
+    spreadProjectsListToView,
+    deleteProject,
+  };
 };
 
-export default projects;
+export default Projects;
