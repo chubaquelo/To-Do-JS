@@ -34,6 +34,8 @@ const Projects = () => {
   };
 
   const addNewProject = (title) => {
+    if (title === "") return alert('You cannot have empty name.');
+    if (F.fetchLocalStorage('Projects').includes(title)) return alert('Your project name is duplicated. Try another.');
     const dashedProjectTitle = F.urlDashedName(title);
     Dom.addProjectCardDom(title, dashedProjectTitle);
     Dom.addOptionForSelect(title, dashedProjectTitle, 'list');

@@ -127,6 +127,11 @@ const toDo = (function toDo() {
     status = false,
     loading = false,
   ) => {
+    
+    if (title === "") {
+      return alert("Task can't be empty.");
+    }
+    
     description = 'Default Description';
     const toDo = new ToDo(
       title,
@@ -136,10 +141,10 @@ const toDo = (function toDo() {
       priority,
       status,
     );
-
     const card = document.querySelector(
       `article.project-card[data-project="${project}"]`,
     );
+
     const ul = document.createElement('ul');
     const taskLi = Dom.createToDoDomElement(toDo);
     ul.append(taskLi);
