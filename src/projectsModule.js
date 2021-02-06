@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+
 import Dom from './DOM';
 import pureFunctions from './pureFunctions';
 
@@ -34,7 +36,7 @@ const Projects = () => {
   };
 
   const addNewProject = (title) => {
-    if (title === "") return alert('You cannot have empty name.');
+    if (title === '') return alert('You cannot have empty name.');
     if (F.fetchLocalStorage('Projects').includes(title)) return alert('Your project name is duplicated. Try another.');
     const dashedProjectTitle = F.urlDashedName(title);
     Dom.addProjectCardDom(title, dashedProjectTitle);

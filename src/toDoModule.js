@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+
 import pureFunctions from './pureFunctions';
 import Dom from './DOM';
 
@@ -127,11 +129,10 @@ const toDo = (function toDo() {
     status = false,
     loading = false,
   ) => {
-    
-    if (title === "") {
-      return alert("Task can't be empty.");
+    if (title === '') {
+      return alert("Task can't be empty."); // eslint-disable-line
     }
-    
+
     description = 'Default Description';
     const toDo = new ToDo(
       title,
