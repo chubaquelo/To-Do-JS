@@ -7,10 +7,6 @@ const Projects = () => {
   const F = pureFunctions();
 
   const deleteProject = (e) => {
-    if (
-      window.confirm('Do you really want to delete the whole Project??')
-      === true
-    ) {
       const projectsList = F.fetchLocalStorage('Projects');
       const tasksList = F.fetchLocalStorage('Tasks');
       const projectName = e.target.previousElementSibling.innerText;
@@ -27,12 +23,20 @@ const Projects = () => {
       F.saveLocalStorage('Projects', projectsList);
       F.saveLocalStorage('Tasks', filteredTasks);
       window.location.reload();
+  };
+
+  const deleteProjectAlert = (e) => {
+    if (
+      window.confirm("Do you really want to delete the whole Project??") ===
+      true
+    ) {
+      deleteProject(e);
     }
   };
 
   const addRemoveProjectsBtnEventListener = () => {
     const btnsRemoveProject = document.querySelectorAll('.btn-delete-project');
-    btnsRemoveProject.forEach((btn) => btn.addEventListener('click', deleteProject));
+    btnsRemoveProject.forEach((btn) => btn.addEventListener('click', deleteProjectAlert));
   };
 
   const addNewProject = (title) => {
