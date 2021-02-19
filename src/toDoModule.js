@@ -184,7 +184,7 @@ const toDo = (function toDo() {
     addTasksListeners();
   };
 
-  return { addToDo, loadTasks, markAsDone };
+  return { addToDo, loadTasks, markAsDone, findIdxWithName, ToDo };
 }());
 
 export default toDo;
