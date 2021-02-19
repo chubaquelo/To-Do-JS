@@ -138,7 +138,6 @@ footer a {
 }
 
 .project-card button {
-  display: none;
   position: absolute;
   height: 50px;
   bottom: -0.5;
