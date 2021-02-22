@@ -7,28 +7,28 @@ const Projects = () => {
   const F = pureFunctions();
 
   const deleteProject = (e) => {
-      const projectsList = F.fetchLocalStorage('Projects');
-      const tasksList = F.fetchLocalStorage('Tasks');
-      const projectName = e.target.previousElementSibling.innerText;
+    const projectsList = F.fetchLocalStorage('Projects');
+    const tasksList = F.fetchLocalStorage('Tasks');
+    const projectName = e.target.previousElementSibling.innerText;
 
-      projectsList.splice(
-        projectsList.indexOf(projectName),
-        1,
-      );
+    projectsList.splice(
+      projectsList.indexOf(projectName),
+      1,
+    );
 
-      const filteredTasks = tasksList.filter(
-        (element) => element.project !== projectName,
-      );
+    const filteredTasks = tasksList.filter(
+      (element) => element.project !== projectName,
+    );
 
-      F.saveLocalStorage('Projects', projectsList);
-      F.saveLocalStorage('Tasks', filteredTasks);
-      window.location.reload();
+    F.saveLocalStorage('Projects', projectsList);
+    F.saveLocalStorage('Tasks', filteredTasks);
+    window.location.reload();
   };
 
   const deleteProjectAlert = (e) => {
     if (
-      window.confirm("Do you really want to delete the whole Project??") ===
-      true
+      window.confirm('Do you really want to delete the whole Project??')
+      === true
     ) {
       deleteProject(e);
     }
