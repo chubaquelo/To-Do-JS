@@ -24,10 +24,3 @@ it('class ToDo is working fine', () => {
   expect(testClass.description).toBe("Test description");
   expect(testClass.description).not.toBe("Other Test description");
 })
-
-it.only('markAsDone features is working', () => {
-  // jest.mock(F.fetchLocalStorage);
-  // const resp = { data: users };
-  // let result = F.fetchLocalStorage.get.mockResolvedValue(resp);
-  // console.log(result)
-})
