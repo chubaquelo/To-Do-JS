@@ -1,9 +1,7 @@
 /* eslint-disable consistent-return */
 
-import pureFunctions from './pureFunctions';
+import { fetchLocalStorage, saveLocalStorage, urlUndashedName } from './utils';
 import Dom from './DOM';
-
-const F = pureFunctions();
 
 const toDo = (function toDo() {
   class ToDo {
@@ -38,7 +36,7 @@ const toDo = (function toDo() {
   }
 
   function saveModalChanges(taskIndex) {
-    const tasksList = F.fetchLocalStorage('Tasks');
+    const tasksList = fetchLocalStorage('Tasks');
     const task = tasksList[taskIndex];
 
     task.title = document.querySelector('.text-editor-inputs[type=text]').value;
@@ -49,7 +47,7 @@ const toDo = (function toDo() {
     task.priority = document.querySelector('select.text-editor-inputs').value;
 
     tasksList[taskIndex] = task;
-    F.saveLocalStorage('Tasks', tasksList);
+    saveLocalStorage('Tasks', tasksList);
 
     const body = document.querySelector('body');
     const taskEditor = document.querySelector('.task-editor');
@@ -58,7 +56,7 @@ const toDo = (function toDo() {
   }
 
   const openTaskEditor = (e) => {
-    const tasksList = F.fetchLocalStorage('Tasks');
+    const tasksList = fetchLocalStorage('Tasks');
     const taskIndex = findIdxWithName(e.target.innerText, tasksList);
     const currentTask = tasksList[taskIndex];
     const body = document.querySelector('body');
@@ -73,13 +71,13 @@ const toDo = (function toDo() {
 
   const eraseTask = (e) => {
     if (window.confirm('Are you sure?') === true) {
-      let tasksList = F.fetchLocalStorage('Tasks');
+      let tasksList = fetchLocalStorage('Tasks');
       const taskTitle = e.target.previousSibling.innerText;
       const filteredList = tasksList.filter(
         (element) => element.title !== taskTitle,
       );
       tasksList = [].concat(filteredList);
-      F.saveLocalStorage('Tasks', tasksList);
+      saveLocalStorage('Tasks', tasksList);
 
       const parent = e.target.parentNode.parentNode;
       const toErase = e.target.parentNode;
@@ -89,7 +87,7 @@ const toDo = (function toDo() {
   };
 
   const markAsDone = (e) => {
-    const tasksList = F.fetchLocalStorage('Tasks');
+    const tasksList = fetchLocalStorage('Tasks');
     tasksList.forEach((task) => {
       if (task.title === e.target.nextSibling.innerText && e.target.checked) {
         task.status = true;
@@ -100,7 +98,7 @@ const toDo = (function toDo() {
         task.status = false;
       }
     });
-    F.saveLocalStorage('Tasks', tasksList);
+    saveLocalStorage('Tasks', tasksList);
   };
 
   const addTasksListeners = () => {
@@ -152,9 +150,9 @@ const toDo = (function toDo() {
     card.append(ul);
 
     if (loading === false) {
-      const taskList = F.fetchLocalStorage('Tasks');
+      const taskList = fetchLocalStorage('Tasks');
       taskList.push(toDo);
-      F.saveLocalStorage('Tasks', taskList);
+      saveLocalStorage('Tasks', taskList);
     }
 
     document.querySelector('#input-todo-name').value = '';
@@ -163,12 +161,12 @@ const toDo = (function toDo() {
   };
 
   const loadTasks = () => {
-    const tasksList = F.fetchLocalStorage('Tasks');
+    const tasksList = fetchLocalStorage('Tasks');
     tasksList.forEach((task) => {
       if (
         localStorage
           .getItem('Projects')
-          .includes(F.urlUndashedName(task.project))
+          .includes(urlUndashedName(task.project))
       ) {
         addToDo(
           task.description,

@@ -4,10 +4,16 @@
   "description": "To-do list widh JS",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
     "webpack": "webpack --watch",
     "dev": "webpack --mode development",
     "build": "webpack --mode production"
+  },
+  "jest": {
+  "name": "my-project",
+  "jest": {
+    "verbose": true
+   }
   },
   "repository": {
     "type": "git",
