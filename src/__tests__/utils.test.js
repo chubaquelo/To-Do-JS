@@ -22,7 +22,7 @@ it("don't return dashed name", () => {
 });
 
 // Mocking localStorage functionality
-const localStorageMock = (function () {
+const localStorageMock = (() => {
   let store = {};
 
   return {
@@ -50,7 +50,7 @@ it('check if saveLocalStorage and fetchLocalStorage is working correctly', () =>
     done: false,
   };
   saveLocalStorage('Name', testObj);
-  expect(fetchLocalStorage("Name")).toBe(
+  expect(fetchLocalStorage('Name')).toBe(
     '{"project":"proyecto","title":"titulo","description":"descripcion","done":false}',
   );
   expect(fetchLocalStorage('Name')).not.toBe(undefined);
