@@ -1,28 +1,28 @@
-import Projects from './projectsModule';
-import toDo from './toDoModule';
+import Projects from './projects';
+import { addToDo, loadTasks } from './toDo';
 
 const projectsModule = Projects();
-const todoModule = toDo;
 
-const projectsList = projectsModule.getProjectsList();
-projectsModule.spreadProjectsListToView(projectsList);
-toDo.loadTasks();
+// Display projects card and then tasks for each project
+projectsModule.spreadProjectsListToView(projectsModule.getProjectsList());
+loadTasks();
 
-const inputNewProjName = document.querySelector('.input-project-name');
+// Set query selectors for buttons, so I can add EventListeners after
 const btnSubmitProject = document.querySelector('.new-project-submit');
 const btnAddToDo = document.querySelector('.new-task-submit');
-// const btnsRemoveProject = document.querySelectorAll(".btn-delete-project");
-
+// Set querySelectors for inputs, to send as attribute on click events
+const inputNewProjName = document.querySelector('.input-project-name');
 const inputToDoName = document.querySelector('#input-todo-name');
 const inputProject = document.querySelector('#select-project');
 const inputDueDate = document.querySelector('.date-picker');
 const inputPriority = document.querySelector('.priority-picker');
 
+// Set EventListeners for different selectors
 btnSubmitProject.addEventListener('click', () => {
   projectsModule.addNewProject(inputNewProjName.value);
 });
 
-btnAddToDo.addEventListener('click', () => todoModule.addToDo(
+btnAddToDo.addEventListener('click', () => addToDo(
   'Default Description',
   inputToDoName.value,
   inputProject.value,
@@ -31,5 +31,3 @@ btnAddToDo.addEventListener('click', () => todoModule.addToDo(
   false,
   false,
 ));
-
-// btnsRemoveProject.forEach(btn => btn.addEventListener('click', projectsModule.deleteProject));
