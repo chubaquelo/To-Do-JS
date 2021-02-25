@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 // eslint-disable-next-line quotes
-import { loadTasks, findIdxWithName, ToDo, addTasksListeners } from "../toDo";
+import { findIdxWithName, ToDo } from '../toDo';
 
 it('find index with name, from given array', () => {
   expect(
