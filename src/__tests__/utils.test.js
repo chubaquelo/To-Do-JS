@@ -1,8 +1,8 @@
 import {
-  fetchLocalStorage,
-  saveLocalStorage,
   urlDashedName,
   urlUndashedName,
+  saveLocalStorage,
+  fetchLocalStorage,
 } from '../utils';
 
 it('returns dashed name', () => {
@@ -21,9 +21,37 @@ it("don't return dashed name", () => {
   expect(urlUndashedName('hello-world')).not.toBe('hello-world');
 });
 
-// fetchLocalStorage = () => "{'Default': 'data'}";
+// Mocking localStorage functionality
+const localStorageMock = (function () {
+  let store = {};
 
-// it("fetchLocalStorage Mock works correctly", () => {
-//   // console.log(localStorage.getItem('Default'))
-//   console.log(fetchLocalStorage('Default'));
-// })
+  return {
+    getItem(key) {
+      return store[key] || [];
+    },
+    setItem(key, value) {
+      store[key] = JSON.stringify(value);
+    },
+    clear() {
+      store = {};
+    },
+  };
+})();
+
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+});
+
+it('check if saveLocalStorage and fetchLocalStorage is working correctly', () => {
+  const testObj = {
+    project: 'proyecto',
+    title: 'titulo',
+    description: 'descripcion',
+    done: false,
+  };
+  saveLocalStorage('Name', testObj);
+  expect(fetchLocalStorage("Name")).toBe(
+    '{"project":"proyecto","title":"titulo","description":"descripcion","done":false}',
+  );
+  expect(fetchLocalStorage('Name')).not.toBe(undefined);
+});
